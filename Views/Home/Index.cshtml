@@ -2,7 +2,77 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+<main class="m-5">
+    <section class="w-25">
+        <form>
+            <div class="mb-3 me-3">
+                <label for="EmpId" class="form-label">EmpId</label>
+                <input type="text" class="form-control" id="EmpId" aria-describedby="emailHelp">
+            </div>
+            <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+        </form>
+    
+    </section>
+    <section>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">EmpId</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Report To</th>
+                </tr>
+            </thead>
+            <tbody id="dataContainer">
+            </tbody>
+        </table>
+    </section>
+</main>
+
+
+
+@section Styles {
+    <style>
+
+    </style>
+
+}
+@section Scripts {
+    <script defer>
+       
+        $('#submit').on('click', async function(event){
+            event.preventDefault();
+            const id = $('#EmpId').val();
+
+            try {
+                const res = await fetch(`/api/Employee/${id}`)
+                if (!res.ok) {
+                    throw new Error(res.statusText);
+                }
+                const data = await res.json();
+                // console.log(data);
+                let string = "";
+                data.forEach(item => {
+                    string += `
+                        <tr>
+                            <td>${item.empId}</td>
+                            <td>${item.firstName}</td>
+                            <td>${item.lastName}</td>
+                            <td>${item.reportsTo}</td>
+                        </tr>
+                                 
+                    `
+                })
+                $('#dataContainer').html(string);
+         
+            }
+            catch(err){
+                console.log(err);
+            }
+      
+           
+        })
+
+    </script>
+}

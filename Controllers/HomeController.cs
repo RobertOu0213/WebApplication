@@ -7,10 +7,12 @@ namespace WebApplication1.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly NorthwindContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, NorthwindContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
